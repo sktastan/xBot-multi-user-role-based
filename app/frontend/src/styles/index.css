@@ -1,0 +1,40 @@
+/* Global base resets — imports handled in App.tsx */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+html, body {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  font-family: 'Inter', 'Outfit', system-ui, -apple-system, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  transition: background 0.35s ease, color 0.3s ease;
+  padding-bottom: env(safe-area-inset-bottom); /* Support for notched phones */
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Loading screen */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-main);
+  letter-spacing: 0.05em;
+}

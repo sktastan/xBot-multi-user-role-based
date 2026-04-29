@@ -1,0 +1,223 @@
+/* ============================================================
+   USER DASHBOARD — uses var(--accent-user) indigo palette
+   ============================================================ */
+
+/* ── Dashboard wrapper ─────────────────────────────────────── */
+.user-dashboard, .auth-page {
+    --panel-accent: var(--accent-user);
+    --panel-accent-light: var(--accent-user-light);
+    --panel-glow: var(--accent-user-glow);
+    --panel-subtle: var(--accent-user-subtle);
+
+    background: var(--bg-main);
+    min-height: 100vh;
+    /* padding: 2rem 2rem 4rem; */
+    padding: 20px;
+    color: var(--text-main);
+    transition: background 0.4s ease, color 0.3s ease;
+    font-family: 'Inter', 'Outfit', system-ui, sans-serif;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-main);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.user-header h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--panel-accent), var(--panel-accent-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.user-header>div {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ── Header button ─────────────────────────────────────────── */
+.btn-user-primary {
+    padding: 0.55rem 1.25rem;
+    background: var(--panel-accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px var(--panel-glow);
+    letter-spacing: -0.01em;
+}
+
+.btn-user-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px var(--panel-glow);
+}
+
+.btn-user-primary:active {
+    transform: scale(0.97);
+}
+
+/* ── Modern Auth Button ────────────────────────────────────── */
+.btn-user-modern {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--accent-user-gradient);
+    color: #fff !important; /* Ensure white text is forced */
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px var(--accent-user-glow);
+    margin-top: 0.5rem;
+}
+
+.btn-user-modern:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 8px 25px var(--accent-user-glow);
+}
+
+.btn-user-modern:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ── Welcome banner ────────────────────────────────────────── */
+.user-welcome-banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border-main);
+    border-left: 4px solid var(--panel-accent);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.user-welcome-banner h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    background: none;
+    -webkit-text-fill-color: initial;
+}
+
+.user-welcome-banner p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* ── Auth page ─────────────────────────────────────────────── */
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--bg-main);
+    padding: 1rem;
+}
+
+.auth-card {
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid var(--border-main);
+}
+
+/* ── Form ──────────────────────────────────────────────────── */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.user-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--bg-input);
+    border: 1.5px solid var(--border-main);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.user-input:focus {
+    outline: none;
+    border-color: var(--panel-accent);
+    box-shadow: 0 0 0 4px var(--panel-subtle);
+    background: var(--bg-card);
+}
+
+.user-input::placeholder {
+    color: var(--text-subtle);
+}
+
+.toggle-auth-btn {
+    background: none;
+    border: none;
+    color: var(--panel-accent);
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.875rem;
+    transition: opacity 0.2s;
+}
+
+.toggle-auth-btn:hover {
+    opacity: 0.75;
+    text-decoration: underline;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .user-dashboard {
+        padding: 1rem 1rem 3rem;
+    }
+
+    .user-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .user-welcome-banner {
+        padding: 2rem 1.5rem;
+    }
+
+    .user-welcome-banner h1 {
+        font-size: 1.5rem;
+    }
+}

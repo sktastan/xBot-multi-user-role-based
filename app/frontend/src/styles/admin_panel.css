@@ -1,0 +1,432 @@
+/* ============================================================
+   ADMIN DASHBOARD — uses var(--accent-admin) violet/fuchsia palette
+   ============================================================ */
+
+/* ── Dashboard wrapper ─────────────────────────────────────── */
+.admin-dashboard {
+    --panel-accent: var(--accent-admin);
+    --panel-accent-light: var(--accent-admin-light);
+    --panel-glow: var(--accent-admin-glow);
+    --panel-subtle: var(--accent-admin-subtle);
+
+    background: var(--bg-main);
+    min-height: 100vh;
+    padding: 2rem 2rem 4rem;
+    color: var(--text-main);
+    font-family: 'Inter', 'Outfit', system-ui, sans-serif;
+    transition: background 0.4s ease, color 0.3s ease;
+}
+
+/* ── Header Modern ─────────────────────────────────────────── */
+.admin-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-header-modern h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--panel-accent), var(--panel-accent-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.admin-badge .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--status-online);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--status-online);
+}
+
+.email-subtle {
+    opacity: 0.6;
+    font-size: 0.75rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* ── Stats ─────────────────────────────────────────────────── */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-main);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--panel-accent);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.75rem;
+}
+
+.stat-card .value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--panel-accent);
+}
+
+/* ── Toolbar ───────────────────────────────────────────────── */
+.management-toolbar {
+    background: var(--bg-card);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-main);
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 500px;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn-primary {
+    padding: 1rem 1.25rem;
+    background: var(--panel-accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px var(--panel-glow);
+    letter-spacing: -0.01em;
+    font-family: inherit;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px var(--panel-glow);
+}
+
+.btn-primary:active {
+    transform: scale(0.97);
+}
+
+.btn-outline {
+    padding: 0.45rem 1rem;
+    background: transparent;
+    border: 1.5px solid var(--border-main);
+    color: var(--text-muted);
+    border-radius: var(--radius-md);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-outline:hover {
+    border-color: var(--panel-accent);
+    color: var(--panel-accent);
+    background: var(--panel-subtle);
+}
+
+.btn-outline:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Welcome card ──────────────────────────────────────────── */
+
+/* ── Error message ─────────────────────────────────────────── */
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.08);
+    padding: 0.875rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin: 1rem 0;
+}
+
+/* ── Search ────────────────────────────────────────────────── */
+.admin-search-input {
+    width: 100%;
+    max-width: 480px;
+    padding: 0.7rem 1rem;
+    background: var(--bg-input);
+    border: 1.5px solid var(--border-main);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-size: 0.875rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.admin-search-input::placeholder {
+    color: var(--text-subtle);
+}
+
+.admin-search-input:focus {
+    outline: none;
+    border-color: var(--panel-accent);
+    box-shadow: 0 0 0 4px var(--panel-subtle);
+    background: var(--bg-card);
+}
+
+/* ── Management grid ───────────────────────────────────────── */
+.dashboard-content {}
+
+.management-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ── Management card ───────────────────────────────────────── */
+.management-card {
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-main);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.management-card:hover {
+    border-color: var(--panel-accent);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-title {
+    margin: 0 0 1.25rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    /* gap: 0.5rem; */
+}
+
+.card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-main);
+}
+
+/* ── Account items ─────────────────────────────────────────── */
+.account-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.125rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.625rem;
+    transition: all 0.2s ease;
+}
+
+.account-item:last-child {
+    margin-bottom: 0;
+}
+
+.account-item:hover {
+    background: var(--panel-subtle);
+    border-color: var(--panel-accent);
+}
+
+.account-item strong {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: block;
+}
+
+.account-item small {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    display: block;
+}
+
+/* ── Online status ─────────────────────────────────────────── */
+.logged-in-user strong {
+    color: var(--status-online);
+}
+
+.user-status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status-offline);
+    margin-right: 6px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.user-status-dot.online {
+    background: var(--status-online);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2), 0 0 12px rgba(34, 197, 94, 0.4);
+    animation: pulse-dot 2s infinite ease-in-out;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .admin-dashboard {
+        padding: 1rem 1rem 3rem;
+    }
+
+    .admin-header-modern {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .management-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mgmt-table-wrapper {
+        overflow-x: auto; /* Enable auto-scroll for user information tables */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mgmt-table {
+        width: 100%; /* Allow table to exceed container width */
+        /* Ensure table is wide enough to trigger horizontal scroll */
+        /* min-width: 600px;  */
+        overflow: scroll;
+    }
+}
+
+/* ── Navigation Tabs ────────────────────────────────────────── */
+.admin-navigation-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-main);
+    padding-bottom: 0.5rem;
+}
+
+.nav-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+    background: var(--panel-subtle);
+    color: var(--text-main);
+}
+
+.nav-tab.active {
+    background: var(--panel-subtle);
+    color: var(--panel-accent);
+    box-shadow: inset 0 -2px 0 var(--panel-accent);
+}
+
+/* ── User Management Table ─────────────────────────────────── */
+.mgmt-table-wrapper {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-main);
+    overflow: hidden;
+}
+
+.mgmt-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.mgmt-table th {
+    padding: 1rem;
+    background: var(--bg-surface);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-main);
+}
+
+.mgmt-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.role-badge {
+    padding: 0.25rem 0.75rem;
+    background: var(--panel-subtle);
+    color: var(--panel-accent);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}

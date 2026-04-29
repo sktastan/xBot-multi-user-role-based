@@ -1,0 +1,51 @@
+:root {
+  /* Core Colors */
+  --bg-dark: #0f172a;
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+
+  /* User Palette (Indigo/Violet) */
+  --user-accent: #6366f1;
+  --user-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --user-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+
+  /* Admin Palette (Emerald/Cyan) */
+  --admin-accent: #10b981;
+  --admin-gradient: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  --admin-glow: 0 0 20px rgba(16, 185, 129, 0.3);
+
+  /* Effects */
+  --glass-blur: blur(12px);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  border-radius: 1rem;
+}
+
+.btn-user {
+  background: var(--user-gradient);
+  color: white;
+  border: none;
+  box-shadow: var(--user-glow);
+  transition: var(--transition-smooth);
+}
+
+.btn-user:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+.btn-admin {
+  background: var(--admin-gradient);
+  color: white;
+  border: none;
+  box-shadow: var(--admin-glow);
+  transition: var(--transition-smooth);
+}
+
+.btn-admin:hover { transform: translateY(-2px); filter: brightness(1.1); }
