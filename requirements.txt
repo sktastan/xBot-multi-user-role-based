@@ -1,26 +1,27 @@
-fastapi==0.110.0
-uvicorn[standard]==0.27.1
-pydantic==2.6.3
-pydantic-settings==2.2.1
-python-dotenv==1.0.1
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-dotenv
 
 # LLM Providers
-openai==1.13.3
-anthropic==0.18.1
-google-genai==0.3.0
+openai
+anthropic
+google-genai
 ollama
 
 # RAG & Vector Search
-langchain==0.1.11
-langchain-community==0.0.27
-langchain-openai==0.0.8
-langchain-google-genai==0.0.9
-chromadb==0.4.24
-sentence-transformers==2.5.1
-pypdf==4.1.0
+langchain
+langchain-community
+langchain-openai
+langchain-google-genai
+chromadb
+sentence-transformers
+pypdf
 
 # Utilities & Persistence
-sqlalchemy==2.0.28
-sse-starlette==2.0.0
-fast-levenshtein==0.0.1
-python-multipart==0.0.9
+sqlalchemy
+sse-starlette
+# fast-levenshtein
+python-multipart
+
