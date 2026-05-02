@@ -108,7 +108,7 @@ Open `http://localhost:5173` in your browser.
 
 Alternative for running the project
 Click
-python_run.bat, 
+python_run.bat, and
 npm_run.bat
 
 ---
