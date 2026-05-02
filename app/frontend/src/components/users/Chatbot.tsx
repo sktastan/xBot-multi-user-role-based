@@ -21,8 +21,16 @@ interface Message {
     prompt: string;
     response: string;
     provider?: string;
+    model?: string;
     timestamp?: string;
 }
+
+const CLOUD_MODELS: Record<string, string[]> = {
+    openai: ['gpt-5.5', 'gpt-5.4', 'gpt-4o', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
+    claude: ['claude-4.6-sonnet', 'claude-4.6-opus', 'claude-4.5-sonnet', 'claude-4-opus'],
+    gemini: ['gemini-3.1-pro', 'gemini-3.0-flash', 'gemini-2.5-pro', 'gemini-2.5-flash'],
+    huggingface: ['Qwen/Qwen3.5-0.8B', 'Qwen/Qwen2.5-0.5B-Instruct']
+};
 
 // ---------------------------------------------------------------------
 //   Interface for conversation metadata.
@@ -52,6 +60,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
     const [streamingResponse, setStreamingResponse] = useState('');
     const [loading, setLoading] = useState(false);
     const [selectedProvider, setSelectedProvider] = useState('ollama');
+    const [availableModels, setAvailableModels] = useState<string[]>([]);
+    const [selectedModel, setSelectedModel] = useState<string>('');
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const chatEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -73,6 +83,33 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, loading]);
+
+    // ---------------------------------------------------------------------
+    //   Fetch available models when provider changes.
+    // -------------------------------------------------------------------
+    useEffect(() => {
+        const fetchModels = async () => {
+            if (selectedProvider === 'ollama') {
+                try {
+                    const res = await axios.get('http://127.0.0.1:11434/api/tags');
+                    const models = res.data.models.map((m: any) => m.name);
+                    setAvailableModels(models);
+                    if (models.length > 0) setSelectedModel(models[0]);
+                    else setSelectedModel('');
+                } catch (err) {
+                    console.error('Failed to fetch Ollama models', err);
+                    setAvailableModels(['qwen3:0.6b', 'llama3']);
+                    setSelectedModel('qwen3:0.6b');
+                }
+            } else {
+                const models = CLOUD_MODELS[selectedProvider] || [];
+                setAvailableModels(models);
+                if (models.length > 0) setSelectedModel(models[0]);
+                else setSelectedModel('');
+            }
+        };
+        fetchModels();
+    }, [selectedProvider]);
 
     // ---------------------------------------------------------------------
     //   Explicitly request resources to be freed on the backend.
@@ -133,6 +170,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                     prompt: sentPrompt,
                     conversation_id: conversationId,
                     provider: selectedProvider,
+                    model: selectedModel,
                     stream: true // Informing backend we want a stream
                 }),
             });
@@ -148,16 +186,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                
+
                 // Append new data to buffer
                 buffer += decoder.decode(value, { stream: true });
-                
+
                 // Process complete SSE messages (delimited by double newline)
                 let boundary;
                 while ((boundary = buffer.indexOf('\n\n')) !== -1) {
                     const packet = buffer.slice(0, boundary).trim();
                     buffer = buffer.slice(boundary + 2);
-                    
+
                     if (packet.startsWith('data: ')) {
                         try {
                             const jsonStr = packet.replace('data: ', '');
@@ -173,7 +211,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
 
             setMessages(prev => [
                 ...prev,
-                { prompt: sentPrompt, response: accumulated, provider: selectedProvider, timestamp: new Date().toISOString() },
+                { prompt: sentPrompt, response: accumulated, provider: selectedProvider, model: selectedModel, timestamp: new Date().toISOString() },
             ]);
             setStreamingResponse('');
 
@@ -323,6 +361,18 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                             <option value="claude">Claude</option>
                             <option value="gemini">Gemini</option>
                         </select>
+                        {availableModels.length > 0 && (
+                            <select
+                                value={selectedModel}
+                                onChange={e => setSelectedModel(e.target.value)}
+                                className="chatbot-provider-select"
+                                style={{ marginLeft: '8px' }}
+                            >
+                                {availableModels.map(m => (
+                                    <option key={m} value={m}>{m}</option>
+                                ))}
+                            </select>
+                        )}
                     </div>
                 </header>
 
@@ -376,7 +426,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
                                         {msg.provider ? (
-                                            <span className="chatbot-provider-tag" style={{ marginTop: 0 }}>{msg.provider}</span>
+                                            <span className="chatbot-provider-tag" style={{ marginTop: 0 }}>
+                                                {msg.provider} {msg.model ? `- ${msg.model}` : ''}
+                                            </span>
                                         ) : <span></span>}
                                         {msg.timestamp && (
                                             <span style={{ fontSize: '10px', color: 'var(--text-subtle, #888)' }}>
@@ -401,7 +453,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                                         <ReactMarkdown>{streamingResponse}</ReactMarkdown>
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
-                                        <span className="chatbot-provider-tag" style={{ marginTop: 0 }}>{selectedProvider} (streaming...)</span>
+                                        <span className="chatbot-provider-tag" style={{ marginTop: 0 }}>
+                                            {selectedProvider} {selectedModel ? `- ${selectedModel}` : ''} (streaming...)
+                                        </span>
                                     </div>
                                 </div>
                             </div>

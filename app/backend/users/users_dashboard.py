@@ -44,7 +44,7 @@ class ChatRequest(BaseModel):
     prompt: str
     conversation_id: str
     provider: str = "ollama"
-    # provider: str = "huggingface"
+    model: str = None
     stream: bool = False
 
 # ---------------------------------------------------------------------
@@ -165,6 +165,13 @@ async def chat_with_ollama(request: ChatRequest):
             if "ollama" not in _llm_cache:
                 _llm_cache["ollama"] = Ollama()
             llm = _llm_cache["ollama"]
+
+        # Set model if requested
+        if request.model:
+            if hasattr(llm, 'setModel'):
+                llm.setModel(request.model)
+            else:
+                llm.model = request.model
 
         # 1. RAG: Retrieve context based on role (Fail-safe wrapper)
         context_text = ""
