@@ -72,6 +72,7 @@ class HuggingFace:
     #   Internal method to load tokenizer and model into memory/VRAM.
 # -------------------------------------------------------------------
     def _init_resources(self):
+        self.cuda_info()
         """Initializes the tokenizer and model using the current repo_id."""
         self.model_path = self.get_local_model_path(self.repo_id)
         
