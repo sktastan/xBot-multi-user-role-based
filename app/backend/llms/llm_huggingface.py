@@ -28,13 +28,13 @@ os.environ["HF_HUB_OFFLINE"] = HG_TRANSFORMERS_OFFLINE
 class CancellationToken(StoppingCriteria):
     # ---------------------------------------------------------------------
     #   Initializes with a thread-safe event for stop signaling.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def __init__(self, stop_event):
         self.stop_event = stop_event
 
     # ---------------------------------------------------------------------
     #   Evaluates if the generation should stop based on the event state.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def __call__(self, input_ids, scores, **kwargs):
         return self.stop_event.is_set() if self.stop_event else False
 
@@ -70,8 +70,10 @@ class HuggingFace:
 
     # ---------------------------------------------------------------------
     #   Internal method to load tokenizer and model into memory/VRAM.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def _init_resources(self):
+        self.cuda_info()
+
         """Initializes the tokenizer and model using the current repo_id."""
         self.model_path = self.get_local_model_path(self.repo_id)
         
@@ -129,7 +131,7 @@ class HuggingFace:
     
     # ---------------------------------------------------------------------
     #   Configures tools/functions available for the model to call.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def set_tools(self, tools):
         """
         Sets the tools for the model. 
@@ -213,6 +215,9 @@ class HuggingFace:
             self._active_thread = None
             self._active_stop_event = None
 
+    # ---------------------------------------------------------------------
+    #   Unloads the model and tokenizer to free up system memory and VRAM.
+    # -------------------------------------------------------------------
     def unload(self):
         """Releases the model and tokenizer from memory/VRAM."""
         print(f"[LLM] Unloading model '{self.repo_id}' to free resources...")

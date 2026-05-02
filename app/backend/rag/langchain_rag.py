@@ -102,7 +102,7 @@ class RAG:
 
     # ---------------------------------------------------------------------
     #   Searches the store using similarity search with role filters.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def search_vector_store(self, query, user_role=None, k=4):
         """
         Performs a similarity search filtered by the user's role.

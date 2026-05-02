@@ -1,6 +1,14 @@
+#===========================================================
+#  database.py
+#  Database configuration and initialization for the application,
+#  handling SQLite connections and schema setup.
+#============================================================
 from sqlite3 import connect
 from contextlib import contextmanager
 
+# ---------------------------------------------------------------------   
+#   Context manager for handling SQLite database connections.
+# --------------------------------------------------------------------- 
 @contextmanager
 def get_db():
     conn = connect("users.db")

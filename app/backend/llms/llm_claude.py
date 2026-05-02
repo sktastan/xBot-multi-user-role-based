@@ -17,7 +17,7 @@ load_dotenv()
 class Claude:
     # ---------------------------------------------------------------------
     #   Sets up the Anthropic client and model selection.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def __init__(self):
         self.model = 'claude-3-haiku-20240307'
         self.api_key = os.getenv("ANTHROPIC_API_KEY")
@@ -27,7 +27,7 @@ class Claude:
 
     # ---------------------------------------------------------------------
     #   Fetches a complete message response for a prompt.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def generate(self, prompt):
         if not self.client:
             return "Claude Error: ANTHROPIC_API_KEY not set correctly in .env file."
@@ -46,7 +46,7 @@ class Claude:
 
     # ---------------------------------------------------------------------
     #   Initiates a stream for incremental message delivery.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def stream(self, prompt):
         if not self.client:
             yield "Claude Error: ANTHROPIC_API_KEY not set correctly in .env file."
@@ -65,6 +65,6 @@ class Claude:
 
     # ---------------------------------------------------------------------
     #   Sets system instructions for Claude's behavior.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def set_system_prompt(self, prompt):
         pass

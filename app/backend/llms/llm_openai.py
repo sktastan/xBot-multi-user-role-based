@@ -27,7 +27,7 @@ class OpenAI:
 
     # ---------------------------------------------------------------------
     #   Generates a full text response for a given prompt.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def generate(self, prompt):
         if not self.client:
             return "OpenAI Error: OPENAI_API_KEY not set correctly in .env file."
@@ -43,7 +43,7 @@ class OpenAI:
 
     # ---------------------------------------------------------------------
     #   Generates a streaming response for real-time output.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def stream(self, prompt):
         if not self.client:
             yield "OpenAI Error: OPENAI_API_KEY not set correctly in .env file."
@@ -63,6 +63,6 @@ class OpenAI:
 
     # ---------------------------------------------------------------------
     #   Sets the system instructions for the model.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def set_system_prompt(self, prompt):
         pass

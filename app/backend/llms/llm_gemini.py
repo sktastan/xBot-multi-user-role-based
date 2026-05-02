@@ -18,7 +18,7 @@ load_dotenv()
 class Gemini:
     # ---------------------------------------------------------------------
     #   Initializes the Gemini client and model configuration.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def __init__(self, model_override: str = 'gemini-2.5-flash'):
         self.model = model_override
         self.api_key = os.getenv("GEMINI_API_KEY")
@@ -29,7 +29,7 @@ class Gemini:
 
     # ---------------------------------------------------------------------
     #   Sends a prompt to Gemini for a synchronous response.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def generate(self, prompt):
         if not self.client:
             return "Gemini Error: GEMINI_API_KEY not set in environment."
@@ -43,7 +43,7 @@ class Gemini:
 
     # ---------------------------------------------------------------------
     #   Sends a prompt to Gemini and yields a stream of response chunks.
-# -------------------------------------------------------------------
+    # -------------------------------------------------------------------
     def stream(self, prompt):
         if not self.client:
             yield "Gemini Error: GEMINI_API_KEY not set in environment."
