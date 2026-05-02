@@ -22,5 +22,4 @@ pypdf==4.1.0
 # Utilities & Persistence
 sqlalchemy==2.0.28
 sse-starlette==2.0.0
-fast-levenshtein==0.0.1
 python-multipart==0.0.9
