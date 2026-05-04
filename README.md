@@ -78,6 +78,9 @@ app/
 -   **Node.js 18+**
 -   **Ollama** (Optional, for local LLM usage) or API keys for cloud providers.
 
+Clone the Repository
+git clone https://github.com/sktastan/xbot.git
+
 ### 2. Backend Installation
 ```bash
 cd backend
