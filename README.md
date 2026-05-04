@@ -79,6 +79,7 @@ app/
 -   **Ollama** (Optional, for local LLM usage) or API keys for cloud providers.
 
 Clone the Repository
+
 git clone https://github.com/sktastan/xbot.git
 
 ### 2. Backend Installation
