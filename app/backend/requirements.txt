@@ -11,6 +11,7 @@ google-genai
 ollama
 
 # RAG & Vector Search
+!python main.py
 langchain
 langchain-community
 langchain-openai
