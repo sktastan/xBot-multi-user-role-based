@@ -80,7 +80,7 @@ app/
 
 Clone the Repository
 
-git clone https://github.com/sktastan/xbot.git
+git clone https://github.com/sktastan/xBot-multi-user-role-based.git
 
 ### 2. Backend Installation
 ```bash
