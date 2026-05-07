@@ -146,4 +146,4 @@ npm_run.bat
 *Demo project for internal use and architectural review.*
 
 ---
-This project was developed in VS Code using Google Gemini Code Assistant (Vibe Coding).
+This project was developed in VS Code using Google Gemini Code Assistant (gemini-2.5-flash).
