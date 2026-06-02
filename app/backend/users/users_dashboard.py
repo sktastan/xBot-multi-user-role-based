@@ -37,13 +37,31 @@ if embeddings:
     rag_system.initialize_vector_store(embeddings, persist_directory="./chroma_db")
 
 # ---------------------------------------------------------------------
+#   Initialize Database Tables (Fail-safe)
+# -------------------------------------------------------------------- 
+with get_db() as _conn:
+    _cursor = _conn.cursor()
+    _cursor.execute("""
+        CREATE TABLE IF NOT EXISTS chat_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            conversation_id TEXT NOT NULL,
+            provider TEXT,
+            prompt TEXT,
+            response TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    _conn.commit()
+
+# ---------------------------------------------------------------------
 #   Schema for user chat requests.
 # -------------------------------------------------------------------- 
 class ChatRequest(BaseModel):
     email: str
     prompt: str
     conversation_id: str
-    provider: str = "ollama"
+    provider: str = "huggingface"
     model: str = None
     stream: bool = False
 
@@ -191,21 +209,28 @@ async def chat_with_ollama(request: ChatRequest):
 
         if request.stream:
             def stream_generator():
-                full_response = ""
-                # We check if the provider class has a 'stream' method implemented
-                if hasattr(llm, 'stream'):
-                    for chunk in llm.stream(final_prompt):
-                        full_response += chunk
-                        # Format as JSON-encoded Server-Sent Event to handle special chars safely
-                        yield f"data: {json.dumps({'content': chunk})}\n\n"
-                else:
-                    # Fallback to standard generate if streaming is not yet supported by the class
-                    response_text = llm.generate(final_prompt)
-                    full_response = response_text
-                    yield f"data: {json.dumps({'content': response_text})}\n\n"
-                
-                # Save the complete interaction to the DB once streaming finishes
-                save_chat_to_db(request.email, request.conversation_id, request.provider, request.prompt, full_response)
+                full_response = []
+                try:
+                    # We check if the provider class has a 'stream' method implemented
+                    if hasattr(llm, 'stream'):
+                        for chunk in llm.stream(final_prompt):
+                            if chunk:
+                                full_response.append(chunk)
+                                # Format as JSON-encoded Server-Sent Event to handle special chars safely
+                                yield f"data: {json.dumps({'content': chunk})}\n\n"
+                    else:
+                        # Fallback to standard generate if streaming is not yet supported by the class
+                        response_text = llm.generate(final_prompt)
+                        full_response.append(response_text)
+                        yield f"data: {json.dumps({'content': response_text})}\n\n"
+                    
+                    # Save the complete interaction to the DB once streaming finishes
+                    combined = "".join(full_response)
+                    if combined:
+                        save_chat_to_db(request.email, request.conversation_id, request.provider, request.prompt, combined)
+                except Exception as stream_err:
+                    print(f"Error during stream generation: {stream_err}")
+                    yield f"data: {json.dumps({'content': ' [Stream Error: Connection Interrupted]'})}\n\n"
 
             return StreamingResponse(
                 stream_generator(), 

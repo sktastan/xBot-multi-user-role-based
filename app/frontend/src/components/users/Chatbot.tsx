@@ -29,7 +29,12 @@ const CLOUD_MODELS: Record<string, string[]> = {
     openai: ['gpt-5.5', 'gpt-5.4', 'gpt-4o', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
     claude: ['claude-4.6-sonnet', 'claude-4.6-opus', 'claude-4.5-sonnet', 'claude-4-opus'],
     gemini: ['gemini-3.1-pro', 'gemini-3.0-flash', 'gemini-2.5-pro', 'gemini-2.5-flash'],
-    huggingface: ['Qwen/Qwen3.5-0.8B', 'Qwen/Qwen2.5-0.5B-Instruct']
+    huggingface: [
+        'Qwen/Qwen2.5-0.5B-Instruct', 
+        'Qwen/Qwen2.5-1.5B-Instruct', 
+        'Qwen/Qwen3.5-0.8B', 
+        'Qwen/Qwen3-0.6B'
+    ]
 };
 
 // ---------------------------------------------------------------------
@@ -59,7 +64,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
     const [currentId, setCurrentId] = useState<string | null>(null);
     const [streamingResponse, setStreamingResponse] = useState('');
     const [loading, setLoading] = useState(false);
-    const [selectedProvider, setSelectedProvider] = useState('ollama');
+    const [selectedProvider, setSelectedProvider] = useState('huggingface');
     const [availableModels, setAvailableModels] = useState<string[]>([]);
     const [selectedModel, setSelectedModel] = useState<string>('');
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);

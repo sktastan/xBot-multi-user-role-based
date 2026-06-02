@@ -46,10 +46,7 @@ class HuggingFace:
     #   Initializes the model and tokenizer from local cache.
     # -------------------------------------------------------------------
     def __init__(self):
-        # self.repo_id = "Qwen/Qwen3.5-4B"
-        # self.repo_id = "Qwen/Qwen3-1.7B"
-        self.repo_id = "Qwen/Qwen3.5-0.8B"
-        # self.repo_id = "Qwen/Qwen2.5-0.5B-Instruct"
+        self.repo_id = "Qwen/Qwen2.5-0.5B-Instruct"
         self.tools = None
         self._active_thread = None
         self._active_stop_event = None
@@ -188,12 +185,12 @@ class HuggingFace:
             do_sample=True,
             temperature=temperature,
             top_p=top_p,
-            repetition_penalty=repetition_penalty,
-            thinking=False
+            repetition_penalty=repetition_penalty
         )
 
         generation_kwargs = dict(
-            **model_inputs,
+            inputs=model_inputs["input_ids"],
+            attention_mask=model_inputs["attention_mask"],
             streamer=streamer,
             generation_config=gen_config,
             stopping_criteria=stopping_criteria,
@@ -203,15 +200,17 @@ class HuggingFace:
         self._active_thread = Thread(target=self.model.generate, kwargs=generation_kwargs)
         self._active_thread.start()
 
-        for new_text in streamer:
-            if stop_event and stop_event.is_set():
-                break
-            yield new_text.replace("*", "").replace("#", "")
-            
-        # Clean up trackers once done
-        if self._active_thread == self._active_thread:
+        try:
+            for new_text in streamer:
+                if stop_event and stop_event.is_set():
+                    break
+                if new_text:
+                    yield new_text.replace("*", "").replace("#", "")
+        finally:
+            # Ensure thread reference is cleaned up even if generator is closed early
             self._active_thread = None
             self._active_stop_event = None
+            
 
     # ---------------------------------------------------------------------
     #   Unloads the model and tokenizer to free up system memory and VRAM.
