@@ -71,38 +71,53 @@ app/
 
 ---
 
-## 🚀 Quick Start & Setup
+## 🚀 Setup & Installation
 
 ### 1. Prerequisites
--   **Python 3.10+**
+-   **Python 3.9+**
 -   **Node.js 18+**
--   **Ollama** (Required for local RAG and specific local models)
+-   **Ollama** (Optional, for local LLM usage) or API keys for cloud providers.
 
-### 2. Automated One-Click Setup
-The project includes a comprehensive `setup.bat` script that automates the entire environment configuration.
+Clone the Repository
 
-1.  Ensure **Ollama** is installed and running on your machine.
-2.  Double-click **`setup.bat`** in the root directory.
-    -   This script will:
-        -   Create a Python virtual environment (`venv`).
-        -   Install all backend dependencies from `requirements.txt`.
-        -   Install all frontend dependencies via `npm`.
-        -   Pull the required Ollama models (`embeddinggemma` and `qwen3:0.6b`).
+git clone https://github.com/sktastan/xBot-multi-user-role-based.git
 
-### 3. Running the Application
-Once setup is complete, you can start the services using the provided batch files:
+### 2. Backend Installation
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+Create a `.env` file in the backend root:
+```env
+OPENAI_API_KEY=your_key_here
+GEMINI_API_KEY=your_key_here
+DATABASE_URL=sqlite:///./chat_app.db
+```
+Run the server:
+```bash
+uvicorn main:app --reload
+```
 
-1.  **Start Backend**: Run `python_run.bat`. (Server starts on `http://localhost:8000`)
-2.  **Start Frontend**: Run `npm_run.bat`. (Dashboard accessible at `http://localhost:5173`)
+### 3. Frontend Installation
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Open `http://localhost:5173` in your browser.
 
 ---
 
-## 🔑 Demo Credentials
-After completing the initial setup via the UI:
--   **User Login**: `john_doe@mail.com` / `password123`
--   **Admin Login**: `john_doe@mail.com` / `admin123`
+Alternative for running the project
+Click
+python_run.bat, and
+npm_run.bat
 
 ---
+
+
 ## 🔍 RAG Pipeline Deep Dive
 
 1.  **Ingestion**: Documents are loaded from `backend/rag/documents/`.

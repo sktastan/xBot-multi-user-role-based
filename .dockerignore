@@ -1,0 +1,11 @@
+**/venv
+**/.venv
+**/node_modules
+**/dist
+**/.git
+**/.env
+**/__pycache__
+**/*.pyc
+**/chroma_db
+**/.ipynb_checkpoints
+**/setup.bat
