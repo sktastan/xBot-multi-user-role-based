@@ -99,8 +99,8 @@ Once setup is complete, you can start the services using the provided batch file
 
 ## 🔑 Demo Credentials
 After completing the initial setup via the UI:
--   **User Login**: `jane_doe@mail.com` / `password123`
--   **Admin Login**: `john_doe@mail.com` / `admin123`
+-   **User Login**: `jane_doe@mail.com` / `password12345`
+-   **Admin Login**: `john_doe@mail.com` / `admin12345`
 
 ---
 ## 🔍 RAG Pipeline Deep Dive
