@@ -7,7 +7,7 @@
 //============================================================
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { UserCog, Shield, Users as UsersIcon, CheckCircle, AlertCircle } from 'lucide-react';
+import { Users as UsersIcon, CheckCircle, AlertCircle } from 'lucide-react';
 
 // ---------------------------------------------------------------------
 //   Interface for defining a system role.
@@ -38,7 +38,7 @@ const UserManagement: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [updateStatus, setUpdateStatus] = useState<{ email: string, success: boolean } | null>(null);
 
-    const API_BASE = `http://${window.location.hostname}:8000/admin`;
+    const API_BASE = "/admin";
 
     useEffect(() => {
         // ---------------------------------------------------------------------

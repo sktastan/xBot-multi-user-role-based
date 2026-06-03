@@ -44,7 +44,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ admin, onLogout }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [activeTab, setActiveTab] = useState<'overview' | 'roles' | 'knowledge'>('overview');
 
-    const API_BASE = `http://${window.location.hostname}:8000/admin`;
+    const API_BASE = "/admin";
 
     // ---------------------------------------------------------------------
     //   Fetches user and admin data from the backend.

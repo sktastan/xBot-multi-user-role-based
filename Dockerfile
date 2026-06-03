@@ -1,5 +1,5 @@
 # Stage 1: Build the React Frontend
-FROM node:18-slim AS frontend-build
+FROM node:22-slim AS frontend-build
 WORKDIR /build
 COPY app/frontend/package*.json ./
 RUN npm install
@@ -24,6 +24,13 @@ USER root
 RUN apt-get update && apt-get install -y \
     git \
     git-lfs \
+    curl \
+    ca-certificates \
+    procps \
+    zstd \
+    --no-install-recommends \
+    && curl -fsSL https://ollama.com/install.sh | sh \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 USER user
 
@@ -31,6 +38,14 @@ USER user
 COPY --chown=user app/backend/requirements.txt ./app/backend/requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r app/backend/requirements.txt
+
+# Pre-download Ollama models during build time to avoid startup timeouts on Hugging Face
+# We start the server in the background, pull the models, then kill the server.
+RUN ollama serve & \
+    sleep 5 && \
+    ollama pull embeddinggemma && \
+    ollama pull qwen3:0.6b && \
+    pkill ollama
 
 # Copy the entire project code
 COPY --chown=user . .
@@ -45,4 +60,4 @@ RUN mkdir -p chroma_db && chown user:user chroma_db
 EXPOSE 7860
 
 # Start the FastAPI application via uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["/bin/sh", "-c", "ollama serve & sleep 5 && uvicorn main:app --host 0.0.0.0 --port 7860"]

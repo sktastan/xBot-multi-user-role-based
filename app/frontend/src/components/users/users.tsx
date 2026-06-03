@@ -39,24 +39,32 @@ const Users: React.FC<UsersProps> = ({ onLoginSuccess }) => {
             : formData;
 
         try {
-            const response = await fetch(`http://${window.location.hostname}:8000${endpoint}`, {
+            const response = await fetch(`${window.location.origin}${endpoint}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
 
-            const data = await response.json();
             if (response.ok) {
+                const data = await response.json();
                 if (isLogin) {
                     onLoginSuccess(data);
                 } else {
                     setIsLogin(true);
                 }
             } else {
-                setError(data.detail || 'Authentication failed');
+                // Handle non-OK responses safely
+                let errorMessage = 'Authentication failed';
+                try {
+                    const data = await response.json();
+                    errorMessage = data.detail || errorMessage;
+                } catch (parseErr) {
+                    errorMessage = `Error ${response.status}: ${response.statusText}`;
+                }
+                setError(errorMessage);
             }
         } catch (err) {
-            setError('Server connection error');
+            setError('Could not connect to server. Please check your internet or if the backend is running.');
         } finally {
             setLoading(false);
         }

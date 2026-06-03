@@ -24,7 +24,7 @@ import AdminSetupForm from './components/admin/admin_setup_form';
 // -------------------------------------------------------------------
 function App() {
   // Initialize state directly from localStorage to avoid unauthenticated "flashes"
-  const [user, setUser] = useState<{ name: string; email: string; data: string | null } | null>(() => {
+  const [user, setUser] = useState<{ name: string; email: string; data?: string | null } | null>(() => {
     const saved = localStorage.getItem('user_session');
     try {
       return saved ? JSON.parse(saved) : null;
@@ -39,7 +39,7 @@ function App() {
   const [checkLoading, setCheckLoading] = useState(true);
 
   // Admin state
-  const [admin, setAdmin] = useState<{ name: string; email: string } | null>(() => {
+  const [admin, setAdmin] = useState<{ name: string; email: string; data?: string | null } | null>(() => {
     const saved = localStorage.getItem('admin_session');
     try {
       return saved ? JSON.parse(saved) : null;
@@ -78,7 +78,7 @@ function App() {
 
   // Check setup status once on mount
   useEffect(() => {
-    const API_URL = `http://${window.location.hostname}:8000/admin-setup/status`;
+    const API_URL = `${window.location.origin}/admin-setup/status`;
     fetch(API_URL)
       .then(res => res.json())
       .then(data => {
@@ -125,7 +125,7 @@ function App() {
           isAdminLoggedIn && admin ? (
             <AdminDashboard admin={admin} onLogout={async () => {
               try {
-                const API_URL = `http://${window.location.hostname}:8000/admin/logout/${admin.email}`;
+                const API_URL = `${window.location.origin}/admin/logout/${admin.email}`;
                 await fetch(API_URL, { method: 'POST' });
               } finally {
                 setIsAdminLoggedIn(false);
@@ -141,7 +141,7 @@ function App() {
             <Dashboard user={user} onLogout={async () => { 
               try {
                 // Assuming the new endpoint we added to admin_management
-                const API_URL = `http://${window.location.hostname}:8000/admin/logout-user/${user.email}`;
+                const API_URL = `${window.location.origin}/admin/logout-user/${user.email}`;
                 await fetch(API_URL, { method: 'POST' });
               } finally {
                 setIsLoggedIn(false);

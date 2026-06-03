@@ -33,7 +33,7 @@ const AdminSigninForm: React.FC = () => {
 
     try {
       // Use the same host as the current window for API calls
-      const response = await fetch(`http://${window.location.hostname}:8000/admin/signin`, {
+      const response = await fetch("/admin/signin", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -13,9 +13,8 @@ import React from "react";
 const loginUser = async (user: { email: string; password: string }) => {
     console.log("Logging in user:", user);
     try {
-        // Do NOT use: const API_URL = "http://localhost:8000/login";
-        // Use this instead to work on both localhost and network IP:
-        const API_URL = `http://${window.location.hostname}:8000/login`;
+        // Use window.location.origin to work on localhost, network IP, and behind HTTPS proxies:
+        const API_URL = `${window.location.origin}/login`;
         
         const response = await fetch(API_URL, {
             method: "POST",
@@ -45,7 +44,7 @@ const loginUser = async (user: { email: string; password: string }) => {
 //   Props for the UserLoginForm component.
 // -------------------------------------------------------------------
 interface LoginProps {
-    onLoginSuccess: (user: { name: string; email: string; data: string | null }) => void;
+    onLoginSuccess: (user: { name: string; email: string; data?: string | null }) => void;
 }
 
 // ---------------------------------------------------------------------
@@ -124,3 +123,4 @@ const UserLoginForm: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     );
 }
 export default UserLoginForm;
+// Ensure no code exists below this line

@@ -20,7 +20,7 @@ const DocumentManagement: React.FC = () => {
     const [status, setStatus] = useState<{message: string, success: boolean} | null>(null);
     const [stats, setStats] = useState({ document_chunks: 0 });
 
-    const API_BASE = `http://${window.location.hostname}:8000/admin`;
+    const API_BASE = "/admin";
 
     // ---------------------------------------------------------------------
     //   Fetches available roles and RAG system statistics on mount.

@@ -5,7 +5,7 @@
 //  
 //============================================================
 import React from 'react';
-import { formatTimestamp } from '../utils/formatDate';
+import { formatTimestamp } from './formatDate';
 
 // ---------------------------------------------------------------------
 //   Props for a single chat message.

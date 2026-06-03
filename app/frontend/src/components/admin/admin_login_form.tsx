@@ -39,7 +39,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin }) => {
         setError('');
 
         try {
-            const API_URL = `http://${window.location.hostname}:8000/admin/login`;
+            const API_URL = "/admin/login";
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

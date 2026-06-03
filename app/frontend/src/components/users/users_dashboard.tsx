@@ -14,7 +14,7 @@ import Chatbot from './Chatbot';
 //   Props for the User Dashboard.
 // -------------------------------------------------------------------
 interface DashboardProps {
-    user: { name: string; email: string; data: string | null };
+    user: { name: string; email: string; data?: string | null | undefined };
     onLogout: () => void;
 }
 

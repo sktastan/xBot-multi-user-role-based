@@ -71,7 +71,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
     const chatEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const API_BASE = `http://${window.location.hostname}:8000/users`;
+    const API_BASE = `${window.location.origin}/users`;
 
     const role = isAdmin ? 'admin' : 'user';
 
@@ -97,7 +97,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
             if (selectedProvider === 'ollama') {
                 try {
                     const res = await axios.get('http://127.0.0.1:11434/api/tags');
-                    const models = res.data.models.map((m: any) => m.name);
+                    const models = Array.isArray(res.data?.models) ? res.data.models.map((m: any) => m.name) : [];
                     setAvailableModels(models);
                     if (models.length > 0) setSelectedModel(models[0]);
                     else setSelectedModel('');
@@ -137,9 +137,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
     const fetchConversations = async () => {
         try {
             const res = await axios.get(`${API_BASE}/chat/conversations/${userEmail}`);
-            setConversations(res.data);
+            setConversations(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error('Error fetching conversations:', err);
+            setConversations([]);
         }
     };
 
@@ -149,9 +150,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
     const fetchHistory = async (id: string) => {
         try {
             const res = await axios.get(`${API_BASE}/chat/history/${id}`);
-            setMessages(res.data);
+            setMessages(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error('Error fetching history:', err);
+            setMessages([]);
         }
     };
 
@@ -283,11 +285,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                     </button>
 
                     {/* Conversations */}
-                    {conversations.length > 0 && (
+                    {Array.isArray(conversations) && conversations.length > 0 ? (
                         <div className="chatbot-conv-section">
                             <p className="chatbot-conv-label">Recent</p>
                             <div className="chatbot-conv-list">
-                                {conversations.map(conv => (
+                                {conversations.filter(c => c && c.id).map(conv => (
                                     <div
                                         key={conv.id}
                                         className={`chatbot-conv-item ${currentId === conv.id ? 'active' : ''}`}
@@ -306,12 +308,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                                 ))}
                             </div>
                         </div>
-                    )}
-
-                    {conversations.length === 0 && (
+                    ) : (
                         <div className="chatbot-conv-empty">
                             <MessageSquare size={28} className="chatbot-conv-empty-icon" />
-                            <p>No conversations yet</p>
+                            <p>{loading ? 'Loading...' : 'No conversations yet'}</p>
                             <span>Start a new chat above</span>
                         </div>
                     )}
@@ -366,7 +366,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                             <option value="claude">Claude</option>
                             <option value="gemini">Gemini</option>
                         </select>
-                        {availableModels.length > 0 && (
+                        {Array.isArray(availableModels) && availableModels.length > 0 && (
                             <select
                                 value={selectedModel}
                                 onChange={e => setSelectedModel(e.target.value)}
@@ -411,7 +411,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ userEmail, isAdmin = false }) => {
                         </div>
                     )}
 
-                    {messages.map((msg, i) => (
+                    {Array.isArray(messages) && messages.map((msg, i) => (
                         <div key={i} className="chatbot-message-group animate-fade-slide-up">
                             {/* User bubble */}
                             <div className="chatbot-bubble-row user">
