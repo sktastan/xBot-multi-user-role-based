@@ -128,7 +128,19 @@ After completing the initial setup via the UI:
 -   *Result:* AI retrieves the latest financial reports and generates a bulleted executive summary.
 
 ---
-*Demo project for internal use and architectural review.*
+Demo Web Page
+https://serdartastan-xbot-multi-user-role-based.hf.space
+
+Demo User
+jane_doe@mail.com
+12345
+
+Admin Page
+https://serdartastan-xbot-multi-user-role-based.hf.space/admin/
+
+Demo Admin
+john_doe@mail.com
+12345
 
 ---
 This project was developed in VS Code using Google Gemini Code Assistant (gemini-2.5-flash).
