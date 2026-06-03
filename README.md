@@ -99,8 +99,8 @@ Once setup is complete, you can start the services using the provided batch file
 
 ## 🔑 Demo Credentials
 After completing the initial setup via the UI:
--   **User Login**: `john_doe@mail.com` / `password123`
--   **Admin Login**: `john_doe@mail.com` / `admin123`
+-   **User Login**: `jane_doe@mail.com` / `password12345`
+-   **Admin Login**: `john_doe@mail.com` / `admin12345`
 
 ---
 ## 🔍 RAG Pipeline Deep Dive
@@ -128,7 +128,19 @@ After completing the initial setup via the UI:
 -   *Result:* AI retrieves the latest financial reports and generates a bulleted executive summary.
 
 ---
-*Demo project for internal use and architectural review.*
+Demo Web Page: 
+https://serdartastan-xbot-multi-user-role-based.hf.space
+
+Demo User: 
+Email Address: jane_doe@mail.com
+Password: 12345
+
+Admin Page: 
+https://serdartastan-xbot-multi-user-role-based.hf.space/admin/
+
+Demo Admin: 
+Email Address: john_doe@mail.com
+Password: 12345
 
 ---
 This project was developed in VS Code using Google Gemini Code Assistant (gemini-2.5-flash).
