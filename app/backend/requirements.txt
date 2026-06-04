@@ -20,3 +20,4 @@ openai
 google-genai
 langchain-google-genai
 anthropic
+docx2txt

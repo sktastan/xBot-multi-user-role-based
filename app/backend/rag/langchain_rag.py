@@ -5,9 +5,15 @@
 #  loading, splitting, and vector storage.
 #  
 #============================================================
-from langchain_community.document_loaders import TextLoader
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.document_loaders import CSVLoader
+import os
+import shutil
+from datetime import datetime
+from langchain_community.document_loaders import (
+    TextLoader,
+    PyPDFLoader,
+    CSVLoader,
+    Docx2txtLoader
+)
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
@@ -16,6 +22,7 @@ from rich import print
 TEXT = 0
 CSV = 1
 PDF = 2
+DOCX = 3
 OLLAMA_EMBEDDING_MODEL = "embeddinggemma"
 
 # ---------------------------------------------------------------------
@@ -28,11 +35,15 @@ class RAG:
     def __init__(self):
         self.embedding_model = None
         self.db = None
+        self.persist_directory = None
 
     # ---------------------------------------------------------------------
     #   Loads document content based on specific file formats.
     # -------------------------------------------------------------------
     def documents_loader(self, file_path, file_type):
+        # Ensure we use an absolute path to avoid issues with some loaders on Windows
+        file_path = os.path.abspath(file_path)
+        
         if file_type == TEXT:
             print("\n[green] -----------------Text Document---------------------------- [/green]\n")
             loader = TextLoader(file_path)
@@ -42,6 +53,9 @@ class RAG:
         elif file_type == PDF:
             print("\n[green]-----------------PDF Document----------------------------[/green]\n")
             loader = PyPDFLoader(file_path)            
+        elif file_type == DOCX:
+            print("\n[green] -----------------DOCX Document---------------------------- [/green]\n")
+            loader = Docx2txtLoader(file_path)
         else:
             raise ValueError("Unsupported file type")
         
@@ -76,6 +90,7 @@ class RAG:
     #   Sets up the Chroma vector store with persistence.
     # -------------------------------------------------------------------
     def initialize_vector_store(self, embedding_model, persist_directory=None):
+        self.persist_directory = persist_directory
         self.db = Chroma(
             persist_directory=persist_directory,
             embedding_function=embedding_model
@@ -92,6 +107,10 @@ class RAG:
         if self.db is not None:
             docs = self.documents_loader(file_path, document_type)
             
+            if not docs:
+                print(f"[yellow]Warning: No content could be extracted from {file_path}[/yellow]")
+                return
+
             # Tag each document with the target role before splitting
             for doc in docs:
                 doc.metadata["role"] = role
@@ -123,6 +142,23 @@ class RAG:
         return self.db.similarity_search(query, k=k, filter=search_filter)
 
     # ---------------------------------------------------------------------
+    #   Performs search and returns results formatted with source names.
+    # -------------------------------------------------------------------
+    def search_with_sources(self, query, user_role=None, k=4):
+        """
+        Performs a search and returns a list of results containing content and source info.
+        """
+        docs = self.search_vector_store(query, user_role, k)
+        return [
+            {
+                "content": doc.page_content,
+                "source": os.path.basename(doc.metadata.get("source", "Unknown")),
+                "role": doc.metadata.get("role", "General")
+            }
+            for doc in docs
+        ]
+
+    # ---------------------------------------------------------------------
     #   Returns the active database instance.
     # -------------------------------------------------------------------
     def get_vector_store(self):
@@ -138,15 +174,55 @@ class RAG:
     #   Updates the physical storage path for the vector database.
     # -------------------------------------------------------------------
     def set_vector_db_directory(self, directory):
-        self.db.persist_directory = directory
-        return self.db.persist_directory
+        self.persist_directory = directory
+        return self.persist_directory
     
     # ---------------------------------------------------------------------
     #   Returns the path where the database is currently persisted.
     # -------------------------------------------------------------------
     def get_vector_db_directory(self):
-        return self.db.persist_directory    
+        return self.persist_directory    
     
+    # ---------------------------------------------------------------------
+    #   Lists unique source filenames present in the vector store.
+    # -------------------------------------------------------------------
+    def list_indexed_documents(self):
+        if self.db is None:
+            return []
+        
+        data = self.db.get()
+        metadatas = data.get('metadatas', [])
+        
+        unique_sources = set()
+        for meta in metadatas:
+            if 'source' in meta:
+                unique_sources.add(os.path.basename(meta['source']))
+        
+        return sorted(list(unique_sources))
+
+    # ---------------------------------------------------------------------
+    #   Deletes all chunks associated with a specific document name.
+    # -------------------------------------------------------------------
+    def delete_document_by_name(self, filename):
+        """
+        Finds and deletes all IDs associated with the source filename.
+        """
+        if self.db is None:
+            raise ValueError("Vector store not initialized.")
+
+        data = self.db.get()
+        ids_to_delete = []
+        
+        for i, metadata in enumerate(data.get('metadatas', [])):
+            source = metadata.get('source', '')
+            if os.path.basename(source) == filename:
+                ids_to_delete.append(data['ids'][i])
+        
+        if ids_to_delete:
+            self.db.delete(ids=ids_to_delete)
+            return len(ids_to_delete)
+        return 0
+
     # ---------------------------------------------------------------------
     #   Clears all document data from the current vector store.
     # -------------------------------------------------------------------
@@ -170,3 +246,24 @@ class RAG:
             self.db = None
         else:
             raise ValueError("Vector store not initialized.")
+
+    # ---------------------------------------------------------------------
+    #   Creates a compressed backup of the vector store directory.
+    # -------------------------------------------------------------------
+    def backup_vector_store(self, backup_dir="backups"):
+        """
+        Archives the current vector store directory into a ZIP file.
+        """
+        source_dir = self.get_vector_db_directory()
+        if not source_dir or not os.path.exists(source_dir):
+            raise ValueError("Vector store directory not found or not initialized.")
+
+        os.makedirs(backup_dir, exist_ok=True)
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        backup_filename = f"vector_db_backup_{timestamp}"
+        backup_path = os.path.join(backup_dir, backup_filename)
+
+        # Create zip archive (shutil adds .zip extension automatically)
+        archive_path = shutil.make_archive(backup_path, 'zip', source_dir)
+        return archive_path

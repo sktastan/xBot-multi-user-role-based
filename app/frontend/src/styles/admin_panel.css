@@ -430,3 +430,205 @@
     font-size: 0.75rem;
     font-weight: 700;
 }
+
+/* ── Knowledge Base Management ─────────────────────────────── */
+.doc-mgmt-grid {
+    grid-template-columns: 1fr 2fr;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .doc-mgmt-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.doc-upload-card, .doc-list-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group-modern label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.admin-select-input, .admin-file-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--bg-input);
+    border: 1.5px solid var(--border-main);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-size: 0.875rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.admin-select-input:focus {
+    outline: none;
+    border-color: var(--panel-accent);
+    box-shadow: 0 0 0 4px var(--panel-subtle);
+}
+
+.file-upload-wrapper {
+    position: relative;
+}
+
+.admin-file-input::file-selector-button {
+    background: var(--panel-subtle);
+    color: var(--panel-accent);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    margin-right: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.admin-file-input::file-selector-button:hover {
+    background: var(--border-main);
+}
+
+.doc-upload-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+.status-message {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    animation: fadeIn 0.3s ease;
+}
+
+.status-message.success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.status-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.doc-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-main);
+}
+
+.doc-count-badge {
+    padding: 0.25rem 0.75rem;
+    background: var(--panel-subtle);
+    color: var(--panel-accent);
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.empty-icon {
+    opacity: 0.2;
+    margin-bottom: 1.5rem;
+    color: var(--text-subtle);
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.doc-table th {
+    padding: 1.25rem 1rem !important;
+}
+
+.doc-table td {
+    padding: 1.25rem 1rem !important;
+}
+
+.doc-table tr:hover td {
+    background: var(--panel-subtle);
+}
+
+.doc-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.doc-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--panel-subtle);
+    color: var(--panel-accent);
+    border-radius: var(--radius-sm);
+}
+
+.btn-icon-danger {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon-danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+}
+
+.btn-danger-outline {
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger-outline:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.5);
+}
