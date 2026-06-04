@@ -129,14 +129,14 @@ After completing the initial setup via the UI:
 
 ---
 Demo Web Page: 
-https://serdartastan-xbot-multi-user-role-based.hf.space
+https://serdartastan-xbot-multi-user-role-based-new.hf.space/
 
 Demo User: 
 Email Address: jane_doe@mail.com
 Password: 12345
 
 Admin Page: 
-https://serdartastan-xbot-multi-user-role-based.hf.space/admin/
+https://serdartastan-xbot-multi-user-role-based-new.hf.space/admin/
 
 Demo Admin: 
 Email Address: john_doe@mail.com
